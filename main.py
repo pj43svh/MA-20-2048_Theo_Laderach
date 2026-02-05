@@ -5,6 +5,3 @@
 
 # Import of the graphics file
 import gfx
-
-# Import of the mechanics file
-import core
