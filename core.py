@@ -8,7 +8,7 @@ def create_grid(side):
     for i in range(side):
         row = []
         for j in range(side):
-            row.append(None)
+            row.append(0)
         grid.append(row)
 
     return grid
@@ -30,7 +30,6 @@ def spawn_rdm(grid,side):
 
 def start_game():
     global grid
-    side = 4
     grid = create_grid(side)
 
     default_pawn = 2
@@ -39,5 +38,5 @@ def start_game():
         grid[rdmX][rdmy]=num
     print(grid)
 
-start_game()
+side = 4
 
