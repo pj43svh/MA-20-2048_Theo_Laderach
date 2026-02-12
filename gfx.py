@@ -83,7 +83,7 @@ def start_game():
         
     open_windows()
 
-def open_windows():
+def open_windows(main):
     global score_num_lbl,labels,labelBackground
 
     
@@ -96,9 +96,6 @@ def open_windows():
     labels = core.create_grid(core.SIDE, fill=None)
     labelBackground = core.create_grid(core.SIDE, fill=None)
 
-    main=Tk()
-    main.title(txt_dict.get("title","2048"))
-    main.geometry("450x580")
 
 
     top_fr =Frame(main)
