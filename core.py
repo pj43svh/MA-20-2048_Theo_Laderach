@@ -74,28 +74,67 @@ def start_game():
             spawn_rdm(grid,SIDE)
         print(grid)
     
+def play(direction,temp_grid):
 
 
-def leftPressed(event):
-    global score
-    if spawn_rdm(grid,SIDE):
-        score += 1
-        
+    temp_grid = rotate_grid(direction,temp_grid)
+    if not temp_grid :
+        print("erreur lors de la modification de la grille")
+        return
 
-    from gfx import refresh_screen
-    refresh_screen()
-
-    print("refresh")
     
+    for row in range(len(temp_grid)) :
+        
+        # moving
+        if temp_grid[row][2] == 0 :
+            temp_grid[row][2],temp_grid[row][3]=temp_grid[row][3],0
 
+        if temp_grid[row][1] == 0 :
+            temp_grid[row][1],temp_grid[row][2],temp_grid[row][3]=temp_grid[row][2],temp_grid[row][3],0
 
-def upPressed(event):
-    print("up is pressed")
+        if temp_grid[row][0] == 0 :
+            temp_grid[row][0],temp_grid[row][1],temp_grid[row][2],temp_grid[row][3]=temp_grid[row][1],temp_grid[row][2],temp_grid[row][3],0
 
+        # merge
 
-def rightPressed(event):
-    print("right is pressed")
+        if temp_grid[row][2] == temp_grid[row][3] :
+            temp_grid[row][2],temp_grid[row][3]=temp_grid[row][2]+1,0
 
+        else: # checks to prevent multiple mergers from happening at once
 
-def downPressed(event):
-    print("down is pressed")
+            if temp_grid[row][0] == temp_grid[row][1] :
+                temp_grid[row][0],temp_grid[row][1],temp_grid[row][2],temp_grid[row][3]=temp_grid[row][0]+1,temp_grid[row][2],temp_grid[row][3],0
+
+            
+            if temp_grid[row][1] == temp_grid[row][2] :
+                temp_grid[row][1],temp_grid[row][2],temp_grid[row][3]=temp_grid[row][1]+1,temp_grid[row][3],0
+    
+    return rotate_grid(direction,temp_grid)
+    
+def rotate_grid(direction,grid):
+    if direction == "left":
+        pass
+
+    elif direction =="right":
+        for row in range(len(grid)) :
+            grid[row] = grid[row][::-1]
+
+    elif direction == "up" :
+        grid2, grid = grid, [[],[],[],[]]
+        for row in range(len(grid2)):
+            for col in range(len(grid2[row])):
+                grid[row].append(grid2[col][row])
+
+    elif direction == "down" :
+        grid2, grid = grid, [[],[],[],[]]
+        for row in range(len(grid2)):
+            for col in range(len(grid2[row])):
+                grid[row].append(grid2[col][row])
+        for row in range(len(grid)) :
+            grid[row] = grid[row][::-1]
+        grid=grid[::-1]
+
+    else:
+        return
+
+    return grid

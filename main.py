@@ -1,4 +1,4 @@
-#  Main file
+# Main file
 # Author : Théo Läderach
 # Date : 12.02.2026
 # Version : 1.0

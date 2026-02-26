@@ -48,7 +48,7 @@ def render_grid_color():
     for y in range(len(core.grid)):
         for x in range(len(core.grid[y])):
             # replace every item in the list using the disctionnary
-            visualGridColor[y][x] = color_dict.get(str(core.grid[y][x]), "#FFFFFF")
+            visualGridColor[y][x] = color_dict.get(str(core.grid[y][x]), "#FF0000")
 
 
 def refresh_labels_grid():
@@ -155,13 +155,55 @@ def open_windows(main):
             
             labels[line][col].pack(padx=5,pady=5)
 
-    main.bind("<KeyRelease-a>",func=core.leftPressed)
-    main.bind("<KeyRelease-Left>",func=core.leftPressed)
-    main.bind("<KeyRelease-w>",func=core.upPressed)
-    main.bind("<KeyRelease-Up>",func=core.upPressed)
-    main.bind("<KeyRelease-d>",func=core.rightPressed)
-    main.bind("<KeyRelease-Right>",func=core.rightPressed)
-    main.bind("<KeyRelease-s>",func=core.downPressed)
-    main.bind("<KeyRelease-Down>",func=core.downPressed)
+    main.bind("<KeyRelease-a>",func=leftPressed)
+    main.bind("<KeyRelease-Left>",func=leftPressed)
+    main.bind("<KeyRelease-w>",func=upPressed)
+    main.bind("<KeyRelease-Up>",func=upPressed)
+    main.bind("<KeyRelease-d>",func=rightPressed)
+    main.bind("<KeyRelease-Right>",func=rightPressed)
+    main.bind("<KeyRelease-s>",func=downPressed)
+    main.bind("<KeyRelease-Down>",func=downPressed)
+    main.bind("<KeyRelease-space>",func=spacePressed)
 
     main.mainloop()
+
+
+def spacePressed(event):
+    core.spawn_rdm(core.grid,core.SIDE)
+    refresh_screen()
+
+def leftPressed(event):
+    print("refresh grid : ",core.play("left",core.grid))
+    core.grid = core.play("left",core.grid)
+    core.spawn_rdm(core.grid,core.SIDE)
+    refresh_screen()
+    
+    
+
+
+def upPressed(event):
+    print("refresh grid : ",core.play("up",core.grid))
+    core.grid = core.play("up",core.grid)
+    core.spawn_rdm(core.grid,core.SIDE)
+    refresh_screen()
+    
+    
+
+def rightPressed(event):
+    print("refresh grid : ",core.play("right",core.grid))
+    core.grid = core.play("right",core.grid)
+    core.spawn_rdm(core.grid,core.SIDE)
+    refresh_screen()
+    
+
+
+def downPressed(event):
+    print("refresh grid : ",core.play("down",core.grid))
+    core.grid = core.play("down",core.grid)
+    core.spawn_rdm(core.grid,core.SIDE)
+    refresh_screen()
+
+#print(core.rotate_grid("down",[[0, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]))
+#print((core.rotate_grid("down",core.rotate_grid("down",[[0, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]))))
+#
+#print(core.rotate_grid("up",[[0, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]))
