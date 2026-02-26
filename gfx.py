@@ -70,7 +70,7 @@ def refresh_screen():
     refresh_score()
 
 
-def start_game():
+def start_game(main):
     global visualGridColor, visualGridTxt
     
     core.start_game()
@@ -81,7 +81,7 @@ def start_game():
     render_grid_txt() # Initialise the text front-end grid
     render_grid_color() # Initialise the color front-end gridgfx.open_windows()
         
-    open_windows()
+    open_windows(main)
 
 def open_windows(main):
     global score_num_lbl,labels,labelBackground
