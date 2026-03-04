@@ -62,10 +62,11 @@ def start_game():
     TEST_MODE = False
 
     if TEST_MODE:
-        grid = [[1, 2, 3, 4],
-                [5, 6, 7, 8],
-                [9, 10, 11, 12],
-                [13, 0, 0, 0]]
+        #grid = [[1, 2, 3, 4],
+        #        [5, 6, 7, 8],
+        #        [9, 10, 11, 12],
+        #        [13, 0, 0, 0]]
+        grid = [[1, 1, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
     else:
         grid = create_grid(SIDE, fill=0)
 
@@ -77,43 +78,23 @@ def start_game():
 def play(direction,temp_grid):
 
 
-    temp_grid = rotate_grid(direction,temp_grid)
+    #temp_grid = rotate_grid(direction,temp_grid)
     if not temp_grid :
         print("erreur lors de la modification de la grille")
         return
-
+    print(temp_grid)
     
     for row in range(len(temp_grid)) :
-        
         # moving
-        if temp_grid[row][2] == 0 :
-            temp_grid[row][2],temp_grid[row][3]=temp_grid[row][3],0
-
-        if temp_grid[row][1] == 0 :
-            temp_grid[row][1],temp_grid[row][2],temp_grid[row][3]=temp_grid[row][2],temp_grid[row][3],0
-
-        if temp_grid[row][0] == 0 :
-            temp_grid[row][0],temp_grid[row][1],temp_grid[row][2],temp_grid[row][3]=temp_grid[row][1],temp_grid[row][2],temp_grid[row][3],0
-
-        # merge
-
-        if temp_grid[row][2] == temp_grid[row][3] :
-            temp_grid[row][2],temp_grid[row][3]=temp_grid[row][2]+1,0
-
-        else: # checks to prevent multiple mergers from happening at once
-
-            if temp_grid[row][0] == temp_grid[row][1] :
-                temp_grid[row][0],temp_grid[row][1],temp_grid[row][2],temp_grid[row][3]=temp_grid[row][0]+1,temp_grid[row][2],temp_grid[row][3],0
-
-            
-            if temp_grid[row][1] == temp_grid[row][2] :
-                temp_grid[row][1],temp_grid[row][2],temp_grid[row][3]=temp_grid[row][1]+1,temp_grid[row][3],0
+        temp_grid[row][0],temp_grid[row][1],temp_grid[row][2],temp_grid[row][3] = pack4(temp_grid[row][0],temp_grid[row][1],temp_grid[row][2],temp_grid[row][3])    
     
-    return rotate_grid(direction,temp_grid)
+    print(temp_grid)
+    #return rotate_grid(direction,temp_grid)
+    return temp_grid
     
 def rotate_grid(direction,grid):
     if direction == "left":
-        pass
+        return grid
 
     elif direction =="right":
         for row in range(len(grid)) :
@@ -138,3 +119,29 @@ def rotate_grid(direction,grid):
         return
 
     return grid
+
+def pack4(a,b,c,d):
+
+    # move
+    if c == 0:
+        c, d = d, 0
+    if b == 0:
+        b, c, d = c, d, 0
+    if a == 0:
+        a, b, c, d = b, c, d, 0
+   
+   # merge
+    if a == b:
+        a = a + 1
+        b = c
+        c = d
+        d = 0
+    if b == c:
+        b = b + 1
+        c = d
+        d = 0
+    if c == d:
+        c = c + 1
+        d = 0
+    
+    return a,b,c,d

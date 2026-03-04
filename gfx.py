@@ -26,6 +26,7 @@ color_dict = dictionnary.get("color_dict")
 
 # Set the font of the game.
 # If the user haven't the font minecraft, it use the font Arial
+# Please, install the font Minecraft.ttf
 try:
     DEFAULT_FONT = "Minecraft"
 except:
@@ -169,13 +170,13 @@ def open_windows(main):
 
 
 def spacePressed(event):
-    core.spawn_rdm(core.grid,core.SIDE)
+    # core.spawn_rdm(core.grid,core.SIDE)
     refresh_screen()
 
 def leftPressed(event):
     print("refresh grid : ",core.play("left",core.grid))
     core.grid = core.play("left",core.grid)
-    core.spawn_rdm(core.grid,core.SIDE)
+    # core.spawn_rdm(core.grid,core.SIDE)
     refresh_screen()
     
     
@@ -184,7 +185,7 @@ def leftPressed(event):
 def upPressed(event):
     print("refresh grid : ",core.play("up",core.grid))
     core.grid = core.play("up",core.grid)
-    core.spawn_rdm(core.grid,core.SIDE)
+    # core.spawn_rdm(core.grid,core.SIDE)
     refresh_screen()
     
     
@@ -192,7 +193,7 @@ def upPressed(event):
 def rightPressed(event):
     print("refresh grid : ",core.play("right",core.grid))
     core.grid = core.play("right",core.grid)
-    core.spawn_rdm(core.grid,core.SIDE)
+    # core.spawn_rdm(core.grid,core.SIDE)
     refresh_screen()
     
 
@@ -200,7 +201,7 @@ def rightPressed(event):
 def downPressed(event):
     print("refresh grid : ",core.play("down",core.grid))
     core.grid = core.play("down",core.grid)
-    core.spawn_rdm(core.grid,core.SIDE)
+    # core.spawn_rdm(core.grid,core.SIDE)
     refresh_screen()
 
 #print(core.rotate_grid("down",[[0, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]))
