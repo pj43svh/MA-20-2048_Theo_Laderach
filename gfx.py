@@ -8,8 +8,15 @@ from tkinter import *
 import json
 import os
 
-current_dir = os.path.dirname(os.path.abspath(__file__))
-dictionnary_file_path = os.path.join(current_dir, "dictionnary.json")
+# code pour  avoir le dossier actuel pour aller chercher le fichier dictionnary.json
+# recherche : comment faire pour ouvrir un fichier de n'importe quel répertoire python
+# https://www.reddit.com/r/learnpython/comments/fpegxj/how_to_make_my_python_script_portable_when_it/?tl=fr#:~:text=Section%20des%20commentaires&text=Pour%20un%20script%20tr%C3%A8s%20simple,le%20r%C3%A9pertoire%20que%20tu%20veux   
+
+# on va chercher le chemin du fichier gfx.py
+current_dir = os.path.dirname(os.path.abspath(__file__)) 
+# on va l'ajouter avant le fichier disctionnary.json pour avoir le bon chemin
+dictionnary_file_path = os.path.join(current_dir, "dictionnary.json") 
+
 
 # Json code come from another project (MA-24)
 try:
