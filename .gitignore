@@ -1,0 +1,9 @@
+# Ignore Python bytecode caches
+__pycache__/
+**/__pycache__/
+.idea/
+**/__idea__/
+.vscode/
+/dist/
+/build/
+.venv/

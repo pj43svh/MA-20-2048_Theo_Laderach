@@ -78,7 +78,7 @@ def start_game():
 def play(direction,temp_grid):
 
 
-    #temp_grid = rotate_grid(direction,temp_grid)
+    temp_grid = rotate_grid(direction,temp_grid)
     if not temp_grid :
         print("erreur lors de la modification de la grille")
         return
@@ -89,8 +89,7 @@ def play(direction,temp_grid):
         temp_grid[row][0],temp_grid[row][1],temp_grid[row][2],temp_grid[row][3] = pack4(temp_grid[row][0],temp_grid[row][1],temp_grid[row][2],temp_grid[row][3])    
     
     print(temp_grid)
-    #return rotate_grid(direction,temp_grid)
-    return temp_grid
+    return rotate_grid(direction,temp_grid)
     
 def rotate_grid(direction,grid):
     if direction == "left":
@@ -131,17 +130,11 @@ def pack4(a,b,c,d):
         a, b, c, d = b, c, d, 0
    
    # merge
-    if a == b:
-        a = a + 1
-        b = c
-        c = d
-        d = 0
-    if b == c:
-        b = b + 1
-        c = d
-        d = 0
-    if c == d:
-        c = c + 1
-        d = 0
-    
+    if a == b and a != 0:
+        a,b,c,d = a + 1,c,d,0
+    if b == c and b != 0:
+        b,c,d = b + 1,d,0
+    if c == d and c != 0:
+        c,d = c + 1,0
+        
     return a,b,c,d

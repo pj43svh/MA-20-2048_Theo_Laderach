@@ -6,8 +6,10 @@ import core
 
 from tkinter import *
 import json
+import os
 
-dictionnary_file_path = "dictionnary.json"
+current_dir = os.path.dirname(os.path.abspath(__file__))
+dictionnary_file_path = os.path.join(current_dir, "dictionnary.json")
 
 # Json code come from another project (MA-24)
 try:
@@ -130,7 +132,8 @@ def open_windows(main):
 
     new_btn = Button(right_fr,
                      text="New Game",
-                     font=(DEFAULT_FONT,12))
+                     font=(DEFAULT_FONT,12),
+                     command=newGame)
     new_btn.pack()
 
     game_fr = Frame(main, 
@@ -176,7 +179,7 @@ def spacePressed(event):
 def leftPressed(event):
     print("refresh grid : ",core.play("left",core.grid))
     core.grid = core.play("left",core.grid)
-    # core.spawn_rdm(core.grid,core.SIDE)
+    core.spawn_rdm(core.grid,core.SIDE)
     refresh_screen()
     
     
@@ -185,7 +188,7 @@ def leftPressed(event):
 def upPressed(event):
     print("refresh grid : ",core.play("up",core.grid))
     core.grid = core.play("up",core.grid)
-    # core.spawn_rdm(core.grid,core.SIDE)
+    core.spawn_rdm(core.grid,core.SIDE)
     refresh_screen()
     
     
@@ -193,7 +196,7 @@ def upPressed(event):
 def rightPressed(event):
     print("refresh grid : ",core.play("right",core.grid))
     core.grid = core.play("right",core.grid)
-    # core.spawn_rdm(core.grid,core.SIDE)
+    core.spawn_rdm(core.grid,core.SIDE)
     refresh_screen()
     
 
@@ -201,10 +204,15 @@ def rightPressed(event):
 def downPressed(event):
     print("refresh grid : ",core.play("down",core.grid))
     core.grid = core.play("down",core.grid)
-    # core.spawn_rdm(core.grid,core.SIDE)
+    core.spawn_rdm(core.grid,core.SIDE)
     refresh_screen()
 
 #print(core.rotate_grid("down",[[0, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]))
 #print((core.rotate_grid("down",core.rotate_grid("down",[[0, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]))))
 #
 #print(core.rotate_grid("up",[[0, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]))
+
+def newGame():
+    core.start_game()
+    refresh_screen()
+    return
