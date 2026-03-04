@@ -120,6 +120,15 @@ def open_windows(main):
                        fg=color_dict.get("title","#f90303"))
     title_lbl.pack()
 
+    theme = StringVar()
+    theme_cb = Checkbutton(left_fr,
+                            text="Dark theme",
+                            variable=theme,
+                            onvalue="Dark",
+                            offvalue="light",
+                            command=lambda : changeTheme(main,theme))
+    theme_cb.pack()
+
 
     right_fr = Frame(top_fr)
     right_fr.pack(side=RIGHT, fill=X,padx=0,pady=0,ipady=0)
@@ -184,7 +193,6 @@ def spacePressed(event):
     refresh_screen()
 
 def leftPressed(event):
-    print("refresh grid : ",core.play("left",core.grid))
     core.grid = core.play("left",core.grid)
     core.spawn_rdm(core.grid,core.SIDE)
     refresh_screen()
@@ -193,7 +201,6 @@ def leftPressed(event):
 
 
 def upPressed(event):
-    print("refresh grid : ",core.play("up",core.grid))
     core.grid = core.play("up",core.grid)
     core.spawn_rdm(core.grid,core.SIDE)
     refresh_screen()
@@ -201,7 +208,6 @@ def upPressed(event):
     
 
 def rightPressed(event):
-    print("refresh grid : ",core.play("right",core.grid))
     core.grid = core.play("right",core.grid)
     core.spawn_rdm(core.grid,core.SIDE)
     refresh_screen()
@@ -209,7 +215,6 @@ def rightPressed(event):
 
 
 def downPressed(event):
-    print("refresh grid : ",core.play("down",core.grid))
     core.grid = core.play("down",core.grid)
     core.spawn_rdm(core.grid,core.SIDE)
     refresh_screen()
@@ -223,3 +228,12 @@ def newGame():
     core.start_game()
     refresh_screen()
     return
+
+def changeTheme(win,theme):
+    if theme == "dark":
+        win.configure(background="#313131")
+    elif theme == "light" :
+        win.configure(background="#ffffff")
+    else :
+        print("error")
+    print("checkbutton change",win,theme)

@@ -62,11 +62,11 @@ def start_game():
     TEST_MODE = False
 
     if TEST_MODE:
-        #grid = [[1, 2, 3, 4],
-        #        [5, 6, 7, 8],
-        #        [9, 10, 11, 12],
-        #        [13, 0, 0, 0]]
-        grid = [[1, 1, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
+        grid = [[1, 2, 3, 4],
+                [5, 6, 7, 8],
+                [9, 10, 11, 12],
+                [13, 0, 0, 0]]
+        #grid = [[1, 1, 1, 1], [0, 1, 1, 0], [1, 0, 0, 1], [1, 1, 1, 0]]
     else:
         grid = create_grid(SIDE, fill=0)
 
@@ -130,11 +130,13 @@ def pack4(a,b,c,d):
         a, b, c, d = b, c, d, 0
    
    # merge
-    if a == b and a != 0:
-        a,b,c,d = a + 1,c,d,0
-    if b == c and b != 0:
-        b,c,d = b + 1,d,0
     if c == d and c != 0:
         c,d = c + 1,0
+    if a == b and a != 0:
+        a,b,c,d = a + 1,c,d,0
+        
+    if b == c and b != 0:
+        b,c,d = b + 1,d,0
+    
         
     return a,b,c,d
