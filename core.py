@@ -92,22 +92,10 @@ def play(direction,temp_grid):
     for row in range(4) :
         
         if direction == "left":
-            temp_grid[row][0],
-            temp_grid[row][1],
-            temp_grid[row][2],
-            temp_grid[row][3] = pack4(temp_grid[row][0],
-                                      temp_grid[row][1],
-                                      temp_grid[row][2],
-                                      temp_grid[row][3])
+            temp_grid[row][0],temp_grid[row][1],temp_grid[row][2],temp_grid[row][3] = pack4(temp_grid[row][0],temp_grid[row][1],temp_grid[row][2],temp_grid[row][3])
                
         elif direction == "right" :
-            temp_grid[row][3],
-            temp_grid[row][2],
-            temp_grid[row][1],
-            temp_grid[row][0] = pack4(temp_grid[row][3],
-                                      temp_grid[row][2],
-                                      temp_grid[row][1],
-                                      temp_grid[row][0])
+            temp_grid[row][3],temp_grid[row][2],temp_grid[row][1],temp_grid[row][0] = pack4(temp_grid[row][3],temp_grid[row][2],temp_grid[row][1],temp_grid[row][0])
         elif direction == "up" :
             temp_grid[0][row],temp_grid[1][row],temp_grid[2][row],temp_grid[3][row] = pack4(temp_grid[0][row],temp_grid[1][row],temp_grid[2][row],temp_grid[3][row])
         elif direction == "down":
