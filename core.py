@@ -67,11 +67,11 @@ def start_game():
     TEST_MODE = True
 
     if TEST_MODE:
-        #grid = [[1, 2, 3, 4],
-        #        [5, 6, 7, 8],
-        #        [9, 10, 11, 12],
-        #        [13, 0, 0, 0]]
-        grid = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 1, 2]]
+        grid = [[1, 2, 3, 4],
+                [5, 6, 7, 8],
+                [9, 10, 11, 12],
+                [13, 0, 0, 0]]
+        grid = [[1, 2, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
     else:
         grid = create_grid(SIDE, fill=0)
 
@@ -80,66 +80,94 @@ def start_game():
             spawn_rdm(grid,SIDE)
         print(grid)
     
-def play(direction,temp_grid):
-    """
-    Function who move the pawn in the direction given in parameter and merge them if they are the same
-    """
-    
-    if not temp_grid :
-        print("Error : any grid")
-        return
-    
+
+def playLeft(temp_grid):
+    nothing_change = True
     for row in range(4) :
-        
-        if direction == "left":
-            temp_grid[row][0],temp_grid[row][1],temp_grid[row][2],temp_grid[row][3] = pack4(temp_grid[row][0],temp_grid[row][1],temp_grid[row][2],temp_grid[row][3])
-               
-        elif direction == "right" :
-            temp_grid[row][3],temp_grid[row][2],temp_grid[row][1],temp_grid[row][0] = pack4(temp_grid[row][3],temp_grid[row][2],temp_grid[row][1],temp_grid[row][0])
-        elif direction == "up" :
-            temp_grid[0][row],temp_grid[1][row],temp_grid[2][row],temp_grid[3][row] = pack4(temp_grid[0][row],temp_grid[1][row],temp_grid[2][row],temp_grid[3][row])
-        elif direction == "down":
-           temp_grid[3][row],temp_grid[2][row],temp_grid[1][row],temp_grid[0][row] = pack4(temp_grid[3][row],temp_grid[2][row],temp_grid[1][row],temp_grid[0][row]) 
-    
-    return temp_grid
+            temp_grid[row][0],temp_grid[row][1],temp_grid[row][2],temp_grid[row][3],change = pack4(temp_grid[row][0],temp_grid[row][1],temp_grid[row][2],temp_grid[row][3])
+            if change > 0:
+                #something change
+                nothing_change = False
+    if nothing_change:
+        return False
+    else:                   
+        return temp_grid
+
+def playRight(temp_grid) :
+    nothing_change = True
+    for row in range(4) :
+            temp_grid[row][3],temp_grid[row][2],temp_grid[row][1],temp_grid[row][0],change = pack4(temp_grid[row][3],temp_grid[row][2],temp_grid[row][1],temp_grid[row][0])
+            if change > 0:
+                #something change
+                nothing_change = False
+    if nothing_change:
+        return False
+    else:                   
+        return temp_grid
+
+def playUp(temp_grid):
+    nothing_change = True
+    for row in range(4) :
+            temp_grid[0][row],temp_grid[1][row],temp_grid[2][row],temp_grid[3][row],change = pack4(temp_grid[0][row],temp_grid[1][row],temp_grid[2][row],temp_grid[3][row])
+            if change > 0:
+                #something change
+                nothing_change = False
+    if nothing_change:
+        return False
+    else:                   
+        return temp_grid
+
+def playDown(temp_grid):
+    nothing_change = True
+    for row in range(4) :
+            temp_grid[3][row],temp_grid[2][row],temp_grid[1][row],temp_grid[0][row],change = pack4(temp_grid[3][row],temp_grid[2][row],temp_grid[1][row],temp_grid[0][row])
+            if change > 0:
+                #something change
+                nothing_change = False
+    if nothing_change:
+        return False
+    else:                   
+        return temp_grid
     
 
 def pack4(a,b,c,d):
+    change = 0
     """
     Function who move the 4 number given in parameter to the left and merge them if they are the same
     """
 
-    move = 0
 
     # move
-    if c == 0:
+    if c == 0 and d != 0:
         c, d = d, 0
-        move += 1
-    if b == 0:
+        change += 1
+    if b == 0 and (c!= 0 or d!= 0):
         b, c, d = c, d, 0
-        move += 1
-    if a == 0:
+        change += 1
+    if a == 0 and (b != 0 or c!= 0 or d!= 0):
         a, b, c, d = b, c, d, 0
-        move += 1
+        change += 1
    
     # merge
     merge = False
 
     if c == d and c != 0:
         c,d = c + 1,0
-        move += 1
         merge = True
+        change += 1
+
     if a == b and a != 0:
         a,b,c,d = a + 1,c,d,0
-        move += 1
+
         merge = True
+        change += 1
         
     if b == c and b != 0:
         b,c,d = b + 1,d,0
-        move += 1
+
         merge = True
     
     # Verification for the combo
-
+    change += 1
         
-    return a,b,c,d, merge
+    return a,b,c,d, change,merge
