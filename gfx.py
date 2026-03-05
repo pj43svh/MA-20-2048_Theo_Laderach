@@ -124,7 +124,6 @@ def open_windows(main):
     labelBackground = core.create_grid(core.SIDE, fill=None)
 
 
-
     top_fr =Frame(main)
     top_fr.pack(side=TOP, fill=X)
 
