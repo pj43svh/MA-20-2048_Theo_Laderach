@@ -83,35 +83,57 @@ def start_game():
 
 def playLeft(temp_grid):
     nothing_change = True
+    merged = False
+
     for row in range(4) :
-            temp_grid[row][0],temp_grid[row][1],temp_grid[row][2],temp_grid[row][3],change = pack4(temp_grid[row][0],temp_grid[row][1],temp_grid[row][2],temp_grid[row][3])
+            temp_grid[row][0],temp_grid[row][1],temp_grid[row][2],temp_grid[row][3],change,merge = pack4(temp_grid[row][0],temp_grid[row][1],temp_grid[row][2],temp_grid[row][3])
             if change > 0:
                 #something change
                 nothing_change = False
+            if merge:
+                merged = True
+    
+    checkCombo(merged)
+
     if nothing_change:
         return False
     else:                   
         return temp_grid
+    
 
 def playRight(temp_grid) :
     nothing_change = True
+    merged = False
+
     for row in range(4) :
-            temp_grid[row][3],temp_grid[row][2],temp_grid[row][1],temp_grid[row][0],change = pack4(temp_grid[row][3],temp_grid[row][2],temp_grid[row][1],temp_grid[row][0])
+            temp_grid[row][3],temp_grid[row][2],temp_grid[row][1],temp_grid[row][0],change,merge = pack4(temp_grid[row][3],temp_grid[row][2],temp_grid[row][1],temp_grid[row][0])
             if change > 0:
                 #something change
                 nothing_change = False
+            if merge:
+                merged = True
+    
+    checkCombo(merged)
+
     if nothing_change:
         return False
     else:                   
         return temp_grid
 
 def playUp(temp_grid):
+    merged = False
     nothing_change = True
+
     for row in range(4) :
-            temp_grid[0][row],temp_grid[1][row],temp_grid[2][row],temp_grid[3][row],change = pack4(temp_grid[0][row],temp_grid[1][row],temp_grid[2][row],temp_grid[3][row])
+            temp_grid[0][row],temp_grid[1][row],temp_grid[2][row],temp_grid[3][row],change,merge = pack4(temp_grid[0][row],temp_grid[1][row],temp_grid[2][row],temp_grid[3][row])
             if change > 0:
                 #something change
                 nothing_change = False
+            if merge:
+                merged = True
+
+    checkCombo(merged)
+
     if nothing_change:
         return False
     else:                   
@@ -119,11 +141,18 @@ def playUp(temp_grid):
 
 def playDown(temp_grid):
     nothing_change = True
+    merged = False
+
     for row in range(4) :
-            temp_grid[3][row],temp_grid[2][row],temp_grid[1][row],temp_grid[0][row],change = pack4(temp_grid[3][row],temp_grid[2][row],temp_grid[1][row],temp_grid[0][row])
+            temp_grid[3][row],temp_grid[2][row],temp_grid[1][row],temp_grid[0][row],change,merge = pack4(temp_grid[3][row],temp_grid[2][row],temp_grid[1][row],temp_grid[0][row])
             if change > 0:
                 #something change
                 nothing_change = False
+            if merge:
+                merged = True
+    
+    checkCombo(merged)
+
     if nothing_change:
         return False
     else:                   
@@ -131,10 +160,10 @@ def playDown(temp_grid):
     
 
 def pack4(a,b,c,d):
-    change = 0
     """
     Function who move the 4 number given in parameter to the left and merge them if they are the same
     """
+    change = 0
 
 
     # move
@@ -171,3 +200,15 @@ def pack4(a,b,c,d):
     change += 1
         
     return a,b,c,d, change,merge
+
+def checkCombo(merged):
+    global combo, failComboAttempt
+
+    if merged:
+        combo += 1
+    else:
+        if combo > 0:
+            failComboAttempt += 1
+            if failComboAttempt > 3:
+                combo = 0
+                failComboAttempt = 0

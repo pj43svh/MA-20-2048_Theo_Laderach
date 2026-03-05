@@ -278,13 +278,4 @@ def changeTheme(win,theme):
         print("error")
     print("checkbutton change",win,theme.get())
 
-def playFrontend(direction):
-    global move
-    grid = core.play(direction,core.grid)
-    if grid != core.grid :
-        core.grid = grid
-        core.spawn_rdm(core.grid,core.SIDE)
-        refresh_screen()
-    else:
-        print("you can't move")
-    return
+
