@@ -22,37 +22,7 @@ def create_grid(side, fill=None):
 
     return grid
 
-def spawn_rdm(grid,side):
-    
-    """
-    Function who spawn randomly the number 2 or 4 on the empty case
-    """
-    empty_case = False
-    for line in range(side):
-        for col in range(side):
-            if grid[line][col] == 0:
-                empty_case=True
 
-    if not empty_case:
-        print("Any empty case")
-        return False
-    from random import randint
-
-    rdmX = randint(0,side-1)
-    rdmY = randint(0,side-1)
-
-    if randint(1,10) == 10 :
-        num = 2
-    else:
-        num = 1
-    
-
-    while grid[rdmX][rdmY]:
-        rdmX = randint(0,side-1)
-        rdmY = randint(0,side-1)
-    print("empty case at",rdmX,rdmY)
-    grid[rdmX][rdmY]=num
-    return True
 
 def start_game():
     """
@@ -67,13 +37,10 @@ def start_game():
                 [5, 6, 7, 8],
                 [9, 10, 11, 12],
                 [13, 0, 0, 0]]
-        grid = [[1, 2, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
+        #grid = [[1, 2, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
     else:
         grid = create_grid(SIDE, fill=0)
 
-        default_pawn = 2
-        for i in range(default_pawn):
-            spawn_rdm(grid,SIDE)
         print(grid)
     
 

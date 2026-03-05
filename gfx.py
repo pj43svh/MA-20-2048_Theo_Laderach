@@ -198,7 +198,6 @@ def Play(direction):
         print("nothing can move")
     else:
         core.grid = temp_grid
-        core.spawn_rdm(core.grid,core.SIDE)
     refresh_screen()
 
 
