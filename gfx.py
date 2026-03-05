@@ -7,16 +7,18 @@ import core
 from tkinter import *
 import json
 import os
+import time
 
-# code pour  avoir le dossier actuel pour aller chercher le fichier dictionnary.json
-# recherche : comment faire pour ouvrir un fichier de n'importe quel répertoire python
+# code to get the current directory to retrieve the dictionary.json file
+# Search: How to open a file from any directory in Python
 # https://www.reddit.com/r/learnpython/comments/fpegxj/how_to_make_my_python_script_portable_when_it/?tl=fr#:~:text=Section%20des%20commentaires&text=Pour%20un%20script%20tr%C3%A8s%20simple,le%20r%C3%A9pertoire%20que%20tu%20veux   
 
-# on va chercher le chemin du fichier gfx.py
+# we will look for the path to the gfx.py file
 current_dir = os.path.dirname(os.path.abspath(__file__)) 
-# on va l'ajouter avant le fichier disctionnary.json pour avoir le bon chemin
+# We'll add it before the sectionary.json file to ensure the correct path.
 dictionnary_file_path = os.path.join(current_dir, "dictionnary.json") 
 
+# I use Json to edit constant variables more easily
 
 # Json code come from another project (MA-24)
 try:
@@ -76,6 +78,9 @@ def refresh_score():
     score_num_lbl.config(text=core.score)
 
 def refresh_screen():
+    """
+    This function refresh all the widget when the player play or reste the game
+    """
     refresh_labels_grid()
     refresh_score()
 
@@ -132,7 +137,7 @@ def open_windows(main):
     score_txt_lbl.pack(side=LEFT)
 
     score_num_lbl = Label(score_fr,
-                          text="xxx",
+                          text="0",
                           font=(DEFAULT_FONT,18,"bold"))
     score_num_lbl.pack(side=RIGHT)
 
@@ -173,41 +178,41 @@ def open_windows(main):
     main.bind("<KeyRelease-Right>",func=rightPressed)
     main.bind("<KeyRelease-s>",func=downPressed)
     main.bind("<KeyRelease-Down>",func=downPressed)
-    main.bind("<KeyRelease-space>",func=spacePressed)
 
     main.mainloop()
 
 
-def spacePressed(event):
-    # core.spawn_rdm(core.grid,core.SIDE)
+def Play(direction):
+    """
+    """
+    if direction == "left":
+        temp_grid = core.playLeft(core.grid)
+    elif direction == "right" :
+        temp_grid = core.playRight(core.grid)
+    elif direction == "up" :
+        temp_grid = core.playUp(core.grid)
+    elif direction == "down" :
+        temp_grid = core.playDown(core.grid)
+    
+    if not temp_grid:
+        print("nothing can move")
+    else:
+        core.grid = temp_grid
+        core.spawn_rdm(core.grid,core.SIDE)
     refresh_screen()
+
 
 def leftPressed(event):
-    core.grid = core.play("left",core.grid)
-    core.spawn_rdm(core.grid,core.SIDE)
-    refresh_screen()
-    
-    
-
+    Play("left")
 
 def upPressed(event):
-    core.grid = core.play("up",core.grid)
-    core.spawn_rdm(core.grid,core.SIDE)
-    refresh_screen()
-    
-    
+    Play("up")
 
 def rightPressed(event):
-    core.grid = core.play("right",core.grid)
-    core.spawn_rdm(core.grid,core.SIDE)
-    refresh_screen()
-    
-
+    Play("right")
 
 def downPressed(event):
-    core.grid = core.play("down",core.grid)
-    core.spawn_rdm(core.grid,core.SIDE)
-    refresh_screen()
+    Play("down")
 
 #print(core.rotate_grid("down",[[0, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]))
 #print((core.rotate_grid("down",core.rotate_grid("down",[[0, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]))))
