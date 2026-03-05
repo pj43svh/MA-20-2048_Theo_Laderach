@@ -107,7 +107,6 @@ def open_windows(main):
     labelBackground = core.create_grid(core.SIDE, fill=None)
 
 
-
     top_fr =Frame(main)
     top_fr.pack(side=TOP, fill=X)
 
@@ -119,15 +118,6 @@ def open_windows(main):
                        font=(DEFAULT_FONT,52,"bold"),
                        fg=color_dict.get("title","#f90303"))
     title_lbl.pack()
-
-    theme = StringVar()
-    theme_cb = Checkbutton(left_fr,
-                            text="Dark theme",
-                            variable=theme,
-                            onvalue="Dark",
-                            offvalue="light",
-                            command=lambda : changeTheme(main,theme))
-    theme_cb.pack()
 
 
     right_fr = Frame(top_fr)
@@ -228,12 +218,3 @@ def newGame():
     core.start_game()
     refresh_screen()
     return
-
-def changeTheme(win,theme):
-    if theme == "dark":
-        win.configure(background="#313131")
-    elif theme == "light" :
-        win.configure(background="#ffffff")
-    else :
-        print("error")
-    print("checkbutton change",win,theme)
