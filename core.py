@@ -23,6 +23,7 @@ def create_grid(side, fill=None):
     return grid
 
 def spawn_rdm(grid,side):
+    
     """
     Function who spawn randomly the number 2 or 4 on the empty case
     """
@@ -59,14 +60,14 @@ def start_game():
     """
     global grid
     # Turn the TEST_MODE to True to see the color of all number
-    TEST_MODE = False
+    TEST_MODE = True
 
     if TEST_MODE:
-        grid = [[1, 2, 3, 4],
-                [5, 6, 7, 8],
-                [9, 10, 11, 12],
-                [13, 0, 0, 0]]
-        #grid = [[1, 1, 1, 1], [0, 1, 1, 0], [1, 0, 0, 1], [1, 1, 1, 0]]
+        #grid = [[1, 2, 3, 4],
+        #        [5, 6, 7, 8],
+        #        [9, 10, 11, 12],
+        #        [13, 0, 0, 0]]
+        grid = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 1, 2]]
     else:
         grid = create_grid(SIDE, fill=0)
 
@@ -77,47 +78,37 @@ def start_game():
     
 def play(direction,temp_grid):
 
-
-    temp_grid = rotate_grid(direction,temp_grid)
+    
     if not temp_grid :
-        print("erreur lors de la modification de la grille")
+        print("Error : any grid")
         return
-    print(temp_grid)
     
-    for row in range(len(temp_grid)) :
-        # moving
-        temp_grid[row][0],temp_grid[row][1],temp_grid[row][2],temp_grid[row][3] = pack4(temp_grid[row][0],temp_grid[row][1],temp_grid[row][2],temp_grid[row][3])    
+    for row in range(4) :
+        
+        if direction == "left":
+            temp_grid[row][0],
+            temp_grid[row][1],
+            temp_grid[row][2],
+            temp_grid[row][3] = pack4(temp_grid[row][0],
+                                      temp_grid[row][1],
+                                      temp_grid[row][2],
+                                      temp_grid[row][3])
+               
+        elif direction == "right" :
+            temp_grid[row][3],
+            temp_grid[row][2],
+            temp_grid[row][1],
+            temp_grid[row][0] = pack4(temp_grid[row][3],
+                                      temp_grid[row][2],
+                                      temp_grid[row][1],
+                                      temp_grid[row][0])
+        elif direction == "up" :
+            temp_grid[0][row],temp_grid[1][row],temp_grid[2][row],temp_grid[3][row] = pack4(temp_grid[0][row],temp_grid[1][row],temp_grid[2][row],temp_grid[3][row])
+        elif direction == "down":
+           temp_grid[3][row],temp_grid[2][row],temp_grid[1][row],temp_grid[0][row] = pack4(temp_grid[3][row],temp_grid[2][row],temp_grid[1][row],temp_grid[0][row]) 
     
-    print(temp_grid)
-    return rotate_grid(direction,temp_grid)
+    return temp_grid
     
-def rotate_grid(direction,grid):
-    if direction == "left":
-        return grid
-
-    elif direction =="right":
-        for row in range(len(grid)) :
-            grid[row] = grid[row][::-1]
-
-    elif direction == "up" :
-        grid2, grid = grid, [[],[],[],[]]
-        for row in range(len(grid2)):
-            for col in range(len(grid2[row])):
-                grid[row].append(grid2[col][row])
-
-    elif direction == "down" :
-        grid2, grid = grid, [[],[],[],[]]
-        for row in range(len(grid2)):
-            for col in range(len(grid2[row])):
-                grid[row].append(grid2[col][row])
-        for row in range(len(grid)) :
-            grid[row] = grid[row][::-1]
-        grid=grid[::-1]
-
-    else:
-        return
-
-    return grid
 
 def pack4(a,b,c,d):
 
