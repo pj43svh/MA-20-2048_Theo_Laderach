@@ -8,6 +8,10 @@ SIDE = 4
 
 score=0
 
+combo = 0
+
+failComboAttempt = 0
+
 def create_grid(side, fill=None):
     """
     Create a square grid made of list and fill with the parameter fill
@@ -76,22 +80,41 @@ def start_game():
         print(grid)
     
 def play(direction,temp_grid):
-
+    """
+    Function who move the pawn in the direction given in parameter and merge them if they are the same
+    """
 
     temp_grid = rotate_grid(direction,temp_grid)
     if not temp_grid :
         print("erreur lors de la modification de la grille")
         return
     print(temp_grid)
-    
+    merge = False
     for row in range(len(temp_grid)) :
         # moving
-        temp_grid[row][0],temp_grid[row][1],temp_grid[row][2],temp_grid[row][3] = pack4(temp_grid[row][0],temp_grid[row][1],temp_grid[row][2],temp_grid[row][3])    
+        temp_grid[row][0],temp_grid[row][1],temp_grid[row][2],temp_grid[row][3],merged = pack4(temp_grid[row][0],temp_grid[row][1],temp_grid[row][2],temp_grid[row][3])    
+        if merged:
+            merge = True
+    
+    global combo,failComboAttempt
+
+    if merge:
+        combo += 1
+
+    elif failComboAttempt < 3 and combo > 0:
+        failComboAttempt +=1
+
+    else:
+        failComboAttempt = 0
+        combo = 0
     
     print(temp_grid)
     return rotate_grid(direction,temp_grid)
     
 def rotate_grid(direction,grid):
+    """
+    Function who rotate the grid in the direction given in parameter to make the move and merge easier
+    """
     if direction == "left":
         return grid
 
@@ -120,23 +143,41 @@ def rotate_grid(direction,grid):
     return grid
 
 def pack4(a,b,c,d):
+    """
+    Function who move the 4 number given in parameter to the left and merge them if they are the same
+    """
+
+    move = 0
 
     # move
     if c == 0:
         c, d = d, 0
+        move += 1
     if b == 0:
         b, c, d = c, d, 0
+        move += 1
     if a == 0:
         a, b, c, d = b, c, d, 0
+        move += 1
    
-   # merge
+    # merge
+    merge = False
+
     if c == d and c != 0:
         c,d = c + 1,0
+        move += 1
+        merge = True
     if a == b and a != 0:
         a,b,c,d = a + 1,c,d,0
+        move += 1
+        merge = True
         
     if b == c and b != 0:
         b,c,d = b + 1,d,0
+        move += 1
+        merge = True
     
+    # Verification for the combo
+
         
-    return a,b,c,d
+    return a,b,c,d, merge
