@@ -78,7 +78,10 @@ def start_game():
     
 
 def playLeft(temp_grid):
+    
     nothing_change = True
+
+    # Use the Function pack4 for each lines to the left
     for row in range(4) :
             temp_grid[row][0],temp_grid[row][1],temp_grid[row][2],temp_grid[row][3],change = pack4(temp_grid[row][0],temp_grid[row][1],temp_grid[row][2],temp_grid[row][3])
             if change > 0:
