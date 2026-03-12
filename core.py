@@ -1,7 +1,7 @@
 # Mechanics of the game
 # Author : Théo Läderach
 # Date : 12.02.2026
-# Version : 1.3
+# Version : 1.3 Main version
 
 
 SIDE = 4
@@ -27,15 +27,11 @@ def spawn_rdm(grid,side):
     """
     Function who spawn randomly the number 2 or 4 on the empty case
     """
-    empty_case = False
-    for line in range(side):
-        for col in range(side):
-            if grid[line][col] == 0:
-                empty_case=True
 
-    if not empty_case:
-        print("Any empty case")
+    # We check if it's empty case on the grid
+    if not checkEmptyCase(grid,side) :
         return False
+    
     from random import randint
 
     rdmX = randint(0,side-1)
@@ -52,7 +48,20 @@ def spawn_rdm(grid,side):
         rdmY = randint(0,side-1)
     print("empty case at",rdmX,rdmY)
     grid[rdmX][rdmY]=num
+    
     return True
+
+def checkEmptyCase(grid,side):
+    """
+    Function who check if it's empty case on the grid
+    """
+    empty_case = False
+    for line in range(side):
+        for col in range(side):
+            if grid[line][col] == 0:
+                empty_case=True
+
+    return empty_case
 
 def start_game():
     """
@@ -60,14 +69,17 @@ def start_game():
     """
     global grid
     # Turn the TEST_MODE to True to see the color of all number
-    TEST_MODE = True
+    TEST_MODE = False
 
     if TEST_MODE:
         grid = [[1, 2, 3, 4],
                 [5, 6, 7, 8],
                 [9, 10, 11, 12],
-                [13, 0, 0, 0]]
-        grid = [[1, 2, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
+                [13, 12, 0, 0]]
+        grid = [[10, 10, 0, 0],
+                [0, 0, 0, 0], 
+                [10, 0, 0, 0], 
+                [10, 0, 0, 0]]
     else:
         grid = create_grid(SIDE, fill=0)
 
@@ -78,14 +90,19 @@ def start_game():
     
 
 def playLeft(temp_grid):
-    
+    """
+    Function that allows you to move the grid
+    to the left with movement and merging thanks to pack4
+    """
+    # this variable is needed after for checking if something change.
     nothing_change = True
 
     # Use the Function pack4 for each lines to the left
     for row in range(4) :
             temp_grid[row][0],temp_grid[row][1],temp_grid[row][2],temp_grid[row][3],change = pack4(temp_grid[row][0],temp_grid[row][1],temp_grid[row][2],temp_grid[row][3])
+            # check if something change
             if change > 0:
-                #something change
+                # something change
                 nothing_change = False
     if nothing_change:
         return False
@@ -93,6 +110,11 @@ def playLeft(temp_grid):
         return temp_grid
 
 def playRight(temp_grid) :
+    """
+    Function that allows you to move the grid
+    to the right with movement and merging thanks to pack4.
+    To understand the function, read playLeft()
+    """
     nothing_change = True
     for row in range(4) :
             temp_grid[row][3],temp_grid[row][2],temp_grid[row][1],temp_grid[row][0],change = pack4(temp_grid[row][3],temp_grid[row][2],temp_grid[row][1],temp_grid[row][0])
@@ -105,6 +127,11 @@ def playRight(temp_grid) :
         return temp_grid
 
 def playUp(temp_grid):
+    """
+    Function that allows you to move the grid
+    to the up with movement and merging thanks to pack4.
+    To understand the function, read playLeft()
+    """
     nothing_change = True
     for row in range(4) :
             temp_grid[0][row],temp_grid[1][row],temp_grid[2][row],temp_grid[3][row],change = pack4(temp_grid[0][row],temp_grid[1][row],temp_grid[2][row],temp_grid[3][row])
@@ -117,6 +144,11 @@ def playUp(temp_grid):
         return temp_grid
 
 def playDown(temp_grid):
+    """
+    Function that allows you to move the grid
+    to the down with movement and merging thanks to pack4.
+    To understand the function, read playLeft()
+    """
     nothing_change = True
     for row in range(4) :
             temp_grid[3][row],temp_grid[2][row],temp_grid[1][row],temp_grid[0][row],change = pack4(temp_grid[3][row],temp_grid[2][row],temp_grid[1][row],temp_grid[0][row])
@@ -130,28 +162,50 @@ def playDown(temp_grid):
     
 
 def pack4(a,b,c,d):
+    """
+    function allowing you to move 
+    or merge numbers in a single line.
+    """
+    # the change is to 0 at the begining
     change = 0
 
-    # move
+    # moving
+    # the black squre ⬛ is the empty space
+
+    # we move only the last number :
+    # 🟩🟨⬛🟥 => 🟩🟨🟥⬛
     if c == 0 and d != 0:
         c, d = d, 0
+        # if something move, we add one change
         change += 1
+    # we move the two last number :
+    # 🟩⬛🟨🟥 => 🟩🟨🟥⬛
     if b == 0 and (c!= 0 or d!= 0):
         b, c, d = c, d, 0
         change += 1
+    # we move only the last number :
+    # ⬛🟩🟨🟥 => 🟩🟨🟥⬛
     if a == 0 and (b != 0 or c!= 0 or d!= 0):
         a, b, c, d = b, c, d, 0
         change += 1
    
-   # merge
+
+   # merging
+
+    # we merge the 2 last number :
+    # 🟥🟨🟦🟦 => 🟥🟨🟩⬛
     if c == d and c != 0:
         c,d = c + 1,0
         change += 1
 
+    # we merge the 2 middle number :
+    # 🟥🟦🟦🟨 => 🟥🟩🟨⬛
     if a == b and a != 0:
         a,b,c,d = a + 1,c,d,0
         change += 1
-        
+
+    # we merge the 2 first number :
+    # 🟦🟦🟥🟨 => 🟩🟥🟨⬛
     if b == c and b != 0:
         b,c,d = b + 1,d,0
         change += 1

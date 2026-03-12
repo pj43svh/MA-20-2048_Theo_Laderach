@@ -1,10 +1,11 @@
 # Graphics of the game
 # Author : Théo Läderach
 # Date : 12.02.2026
-# Version : 1.3
+# Version : 1.3 Main version
 import core
 
 from tkinter import *
+from tkinter import messagebox
 import json
 import os
 import time
@@ -28,6 +29,7 @@ except:
     print("Error with open the dictionnary json file")
     exit()
 
+
 # Dictionnary for the text
 txt_dict = dictionnary.get("txt_dict")
 
@@ -43,6 +45,8 @@ try:
 except:
     DEFAULT_FONT = "Arial"
 
+# At the start, player never has 2048.
+alreadyHave2048 = False
 
 # Function who place the text on the front-end grid 
 # by using the back-end grid and the dictionnary.
@@ -99,6 +103,9 @@ def start_game(main):
     open_windows(main)
 
 def open_windows(main):
+    """
+    Creation of the windows and the grid on the interface
+    """
     global score_num_lbl,labels,labelBackground
 
     
@@ -184,7 +191,11 @@ def open_windows(main):
 
 def Play(direction):
     """
+    A function allowing play in different directions,
+    the new tiles appear,
+    and the end of the game is checked.
     """
+    global alreadyHave2048
     if direction == "left":
         temp_grid = core.playLeft(core.grid)
     elif direction == "right" :
@@ -200,6 +211,34 @@ def Play(direction):
         core.grid = temp_grid
         core.spawn_rdm(core.grid,core.SIDE)
     refresh_screen()
+
+    # Check if the player made a 2048
+    if not alreadyHave2048 :
+        for row in core.grid:
+            # 11 is 2048 in the dictionnary
+            if 11 in row:
+                alreadyHave2048 = True
+                # ask you if you want to continue again or reset the
+                if not messagebox.askyesno("You Won !","YOU WON !!!\nYou obtained a 2048 !\nDo you want to continue playing ?"):
+                    newGame()
+                    return
+                
+    # Game over conditions:
+    # Check if the grid has empty case
+    if not core.checkEmptyCase(core.grid,core.SIDE):
+        # verify if you can move
+        if not core.playUp(core.grid) and not core.playDown(core.grid) and not core.playLeft(core.grid) and not core.playRight(core.grid) :
+        # if you can't move, it's game over.
+            print("Game over")
+            if messagebox.askretrycancel("Game Over", "GAME OVER !\nDo you want retry ?") :
+                newGame()
+            else:
+                exit()
+            return
+
+    else:
+        return
+
 
 
 def leftPressed(event):
@@ -220,6 +259,12 @@ def downPressed(event):
 #print(core.rotate_grid("up",[[0, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]))
 
 def newGame():
+    
+    """
+    reset the game grid, the score and the interface
+    """
+    global alreadyHave2048
+    alreadyHave2048 = False
     core.start_game()
     refresh_screen()
     return
