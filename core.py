@@ -1,6 +1,6 @@
 # Mechanics of the game
 # Author : Théo Läderach
-# Date : 12.02.2026
+# Date : 17.03.2026
 # Version : 1.3 Main version
 
 
@@ -68,6 +68,7 @@ def start_game():
     creation of the grid and sapwn the default number
     """
     global grid
+
     # Turn the TEST_MODE to True to see the color of all number
     TEST_MODE = False
 
@@ -76,10 +77,10 @@ def start_game():
                 [5, 6, 7, 8],
                 [9, 10, 11, 12],
                 [13, 12, 0, 0]]
-        grid = [[10, 10, 0, 0],
-                [0, 0, 0, 0], 
-                [10, 0, 0, 0], 
-                [10, 0, 0, 0]]
+        grid = [[10, 10, 0, 1],
+                [0, 0, 0, 1], 
+                [0, 0, 0, 2], 
+                [0, 0, 0, 3]]
     else:
         grid = create_grid(SIDE, fill=0)
 
@@ -169,45 +170,49 @@ def pack4(a,b,c,d):
     # the change is to 0 at the begining
     change = 0
 
-    # moving
-    # the black squre ⬛ is the empty space
+    # MOVING
+    # the black squre 0, is the empty space
 
     # we move only the last number :
-    # 🟩🟨⬛🟥 => 🟩🟨🟥⬛
+    # 4,8,0,16 => 4,8,16,0
     if c == 0 and d != 0:
         c, d = d, 0
         # if something move, we add one change
         change += 1
+
     # we move the two last number :
-    # 🟩⬛🟨🟥 => 🟩🟨🟥⬛
+    # 4,0,8,16 => 4,8,16,0
     if b == 0 and (c!= 0 or d!= 0):
         b, c, d = c, d, 0
         change += 1
     # we move only the last number :
-    # ⬛🟩🟨🟥 => 🟩🟨🟥⬛
+    # 0,4,8,16 => 4,8,16,0
     if a == 0 and (b != 0 or c!= 0 or d!= 0):
         a, b, c, d = b, c, d, 0
         change += 1
    
 
-   # merging
-
+   # MERGING
+    merge = 0
     # we merge the 2 last number :
-    # 🟥🟨🟦🟦 => 🟥🟨🟩⬛
+    # 16,8,2,2 => 16,8,4,0
     if c == d and c != 0:
         c,d = c + 1,0
         change += 1
+        merge += 1
 
     # we merge the 2 middle number :
-    # 🟥🟦🟦🟨 => 🟥🟩🟨⬛
+    # 16,2,2,8 => 16,4,8,0
     if a == b and a != 0:
         a,b,c,d = a + 1,c,d,0
         change += 1
+        merge += 1
 
     # we merge the 2 first number :
-    # 🟦🟦🟥🟨 => 🟩🟥🟨⬛
-    if b == c and b != 0:
+    # 2,2,16,8 => 4,16,8,0
+    if b == c and b != 0 and merge == 0:
         b,c,d = b + 1,d,0
         change += 1
+    
         
     return a,b,c,d,change
