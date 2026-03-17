@@ -1,4 +1,4 @@
-# 2048 Théo Läderach
+# 2048 Théo Läderach - SPRINT 3
 
 Voici mon projet 2028 pour le cours MA-20
 
