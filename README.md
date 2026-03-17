@@ -2,6 +2,8 @@
 
 Voici mon projet 2028 pour le cours MA-20
 
+![2048](maquette.png "maquette 2048")
+
 ## ⚠️ Prérequis
 
 1. il faut installer la police d'écriture [minecraft.ttf](/Minecraft.ttf)
