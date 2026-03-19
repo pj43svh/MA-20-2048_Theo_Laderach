@@ -70,17 +70,17 @@ def start_game():
     global grid
 
     # Turn the TEST_MODE to True to see the color of all number
-    TEST_MODE = False
+    TEST_MODE = True
 
     if TEST_MODE:
         grid = [[1, 2, 3, 4],
                 [5, 6, 7, 8],
                 [9, 10, 11, 12],
-                [13, 12, 0, 0]]
-        grid = [[10, 10, 0, 1],
-                [0, 0, 0, 1], 
-                [0, 0, 0, 2], 
-                [0, 0, 0, 3]]
+                [13, 0, 0, 0]]
+        #grid = [[10, 10, 0, 1],
+        #        [0, 0, 0, 1], 
+        #        [0, 0, 0, 2], 
+        #        [0, 0, 0, 3]]
     else:
         grid = create_grid(SIDE, fill=0)
 
@@ -90,7 +90,7 @@ def start_game():
         print(grid)
     
 
-def playLeft(temp_grid):
+def playLeft(temp_grid,NoScore =False):
     """
     Function that allows you to move the grid
     to the left with movement and merging thanks to pack4
@@ -98,68 +98,102 @@ def playLeft(temp_grid):
     # this variable is needed after for checking if something change.
     nothing_change = True
 
+    score=0
+
     # Use the Function pack4 for each lines to the left
     for row in range(4) :
-            temp_grid[row][0],temp_grid[row][1],temp_grid[row][2],temp_grid[row][3],change = pack4(temp_grid[row][0],temp_grid[row][1],temp_grid[row][2],temp_grid[row][3])
+            temp_grid[row][0],temp_grid[row][1],temp_grid[row][2],temp_grid[row][3],change,temp_score = pack4(temp_grid[row][0],temp_grid[row][1],temp_grid[row][2],temp_grid[row][3])
             # check if something change
             if change > 0:
                 # something change
                 nothing_change = False
-    if nothing_change:
-        return False
-    else:                   
-        return temp_grid
+                score += temp_score
 
-def playRight(temp_grid) :
+    if nothing_change:
+        result = False
+    else:                   
+        result = temp_grid
+
+    if not NoScore :
+        result= result,score
+
+    return result
+
+def playRight(temp_grid,NoScore =False) :
     """
     Function that allows you to move the grid
     to the right with movement and merging thanks to pack4.
     To understand the function, read playLeft()
     """
     nothing_change = True
+    score = 0
+
     for row in range(4) :
-            temp_grid[row][3],temp_grid[row][2],temp_grid[row][1],temp_grid[row][0],change = pack4(temp_grid[row][3],temp_grid[row][2],temp_grid[row][1],temp_grid[row][0])
+            temp_grid[row][3],temp_grid[row][2],temp_grid[row][1],temp_grid[row][0],change,temp_score = pack4(temp_grid[row][3],temp_grid[row][2],temp_grid[row][1],temp_grid[row][0])
             if change > 0:
                 #something change
                 nothing_change = False
+                score += temp_score
     if nothing_change:
-        return False
+        result = False
     else:                   
-        return temp_grid
+        result = temp_grid
 
-def playUp(temp_grid):
+    if not NoScore :
+        result= result,score
+
+    return result
+
+def playUp(temp_grid,NoScore =False):
     """
     Function that allows you to move the grid
     to the up with movement and merging thanks to pack4.
     To understand the function, read playLeft()
     """
     nothing_change = True
+    score = 0
     for row in range(4) :
-            temp_grid[0][row],temp_grid[1][row],temp_grid[2][row],temp_grid[3][row],change = pack4(temp_grid[0][row],temp_grid[1][row],temp_grid[2][row],temp_grid[3][row])
+            temp_grid[0][row],temp_grid[1][row],temp_grid[2][row],temp_grid[3][row],change,temp_score = pack4(temp_grid[0][row],temp_grid[1][row],temp_grid[2][row],temp_grid[3][row])
             if change > 0:
                 #something change
                 nothing_change = False
-    if nothing_change:
-        return False
-    else:                   
-        return temp_grid
+                score += temp_score
 
-def playDown(temp_grid):
+    if nothing_change:
+        result = False
+    else:                   
+        result = temp_grid
+
+    if not NoScore :
+        result= result,score
+
+    return result
+
+def playDown(temp_grid,NoScore =False):
     """
     Function that allows you to move the grid
     to the down with movement and merging thanks to pack4.
     To understand the function, read playLeft()
     """
     nothing_change = True
+    score = 0
+
     for row in range(4) :
-            temp_grid[3][row],temp_grid[2][row],temp_grid[1][row],temp_grid[0][row],change = pack4(temp_grid[3][row],temp_grid[2][row],temp_grid[1][row],temp_grid[0][row])
+            temp_grid[3][row],temp_grid[2][row],temp_grid[1][row],temp_grid[0][row],change,temp_score = pack4(temp_grid[3][row],temp_grid[2][row],temp_grid[1][row],temp_grid[0][row])
             if change > 0:
                 #something change
                 nothing_change = False
+                score += temp_score
+                
     if nothing_change:
-        return False
+        result = False
     else:                   
-        return temp_grid
+        result = temp_grid
+
+    if not NoScore :
+        result= result,score
+
+    return result
     
 
 def pack4(a,b,c,d):
@@ -167,8 +201,9 @@ def pack4(a,b,c,d):
     function allowing you to move 
     or merge numbers in a single line.
     """
-    # the change is to 0 at the begining
+    # the change and the temp_score is to 0 at the begining
     change = 0
+    temp_score = 0
 
     # MOVING
     # the black squre 0, is the empty space
@@ -200,6 +235,7 @@ def pack4(a,b,c,d):
         c,d = c + 1,0
         change += 1
         merge += 1
+        temp_score += 2**c
 
     # we merge the 2 middle number :
     # 16,2,2,8 => 16,4,8,0
@@ -207,12 +243,14 @@ def pack4(a,b,c,d):
         a,b,c,d = a + 1,c,d,0
         change += 1
         merge += 1
+        temp_score += 2**a
 
     # we merge the 2 first number :
     # 2,2,16,8 => 4,16,8,0
     if b == c and b != 0 and merge == 0:
         b,c,d = b + 1,d,0
         change += 1
+        temp_score += 2**b
     
         
-    return a,b,c,d,change
+    return a,b,c,d,change,temp_score
