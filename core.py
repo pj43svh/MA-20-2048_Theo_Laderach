@@ -8,6 +8,10 @@ SIDE = 4
 
 score=0
 
+combo = 0
+
+failComboAttempt = 0
+
 def create_grid(side, fill=None):
     """
     Create a square grid made of list and fill with the parameter fill
@@ -97,17 +101,24 @@ def playLeft(temp_grid,NoScore =False):
     """
     # this variable is needed after for checking if something change.
     nothing_change = True
+    merged = False
+
 
     score=0
 
     # Use the Function pack4 for each lines to the left
     for row in range(4) :
-            temp_grid[row][0],temp_grid[row][1],temp_grid[row][2],temp_grid[row][3],change,temp_score = pack4(temp_grid[row][0],temp_grid[row][1],temp_grid[row][2],temp_grid[row][3])
+            temp_grid[row][0],temp_grid[row][1],temp_grid[row][2],temp_grid[row][3],change,merge,temp_score = pack4(temp_grid[row][0],temp_grid[row][1],temp_grid[row][2],temp_grid[row][3])
             # check if something change
             if change > 0:
                 # something change
                 nothing_change = False
                 score += temp_score
+            if merge:
+                merged = True
+    
+    checkCombo(merged)
+
 
     if nothing_change:
         result = False
@@ -126,14 +137,21 @@ def playRight(temp_grid,NoScore =False) :
     To understand the function, read playLeft()
     """
     nothing_change = True
+    merged = False
+
     score = 0
 
     for row in range(4) :
-            temp_grid[row][3],temp_grid[row][2],temp_grid[row][1],temp_grid[row][0],change,temp_score = pack4(temp_grid[row][3],temp_grid[row][2],temp_grid[row][1],temp_grid[row][0])
+            temp_grid[row][3],temp_grid[row][2],temp_grid[row][1],temp_grid[row][0],change,merge,temp_score = pack4(temp_grid[row][3],temp_grid[row][2],temp_grid[row][1],temp_grid[row][0])
             if change > 0:
                 #something change
                 nothing_change = False
+            if merge:
+                merged = True
                 score += temp_score
+    
+    checkCombo(merged)
+
     if nothing_change:
         result = False
     else:                   
@@ -150,14 +168,21 @@ def playUp(temp_grid,NoScore =False):
     to the up with movement and merging thanks to pack4.
     To understand the function, read playLeft()
     """
+
+    merged = False
     nothing_change = True
     score = 0
     for row in range(4) :
-            temp_grid[0][row],temp_grid[1][row],temp_grid[2][row],temp_grid[3][row],change,temp_score = pack4(temp_grid[0][row],temp_grid[1][row],temp_grid[2][row],temp_grid[3][row])
+            temp_grid[0][row],temp_grid[1][row],temp_grid[2][row],temp_grid[3][row],change,merge,temp_score = pack4(temp_grid[0][row],temp_grid[1][row],temp_grid[2][row],temp_grid[3][row])
             if change > 0:
                 #something change
                 nothing_change = False
                 score += temp_score
+
+            if merge:
+                merged = True
+
+    checkCombo(merged)
 
     if nothing_change:
         result = False
@@ -176,15 +201,22 @@ def playDown(temp_grid,NoScore =False):
     To understand the function, read playLeft()
     """
     nothing_change = True
+    merged = False
+
     score = 0
 
     for row in range(4) :
-            temp_grid[3][row],temp_grid[2][row],temp_grid[1][row],temp_grid[0][row],change,temp_score = pack4(temp_grid[3][row],temp_grid[2][row],temp_grid[1][row],temp_grid[0][row])
+            temp_grid[3][row],temp_grid[2][row],temp_grid[1][row],temp_grid[0][row],change,merge,temp_score = pack4(temp_grid[3][row],temp_grid[2][row],temp_grid[1][row],temp_grid[0][row])
             if change > 0:
                 #something change
                 nothing_change = False
                 score += temp_score
                 
+            if merge:
+                merged = True
+    
+    checkCombo(merged)
+
     if nothing_change:
         result = False
     else:                   
@@ -233,6 +265,7 @@ def pack4(a,b,c,d):
     # 16,8,2,2 => 16,8,4,0
     if c == d and c != 0:
         c,d = c + 1,0
+        merge = True
         change += 1
         merge += 1
         temp_score += 2**c
@@ -241,6 +274,8 @@ def pack4(a,b,c,d):
     # 16,2,2,8 => 16,4,8,0
     if a == b and a != 0:
         a,b,c,d = a + 1,c,d,0
+
+        merge = True
         change += 1
         merge += 1
         temp_score += 2**a
@@ -253,4 +288,16 @@ def pack4(a,b,c,d):
         temp_score += 2**b
     
         
-    return a,b,c,d,change,temp_score
+    return a,b,c,d, change,temp_score,merge
+
+def checkCombo(merged):
+    global combo, failComboAttempt
+
+    if merged:
+        combo += 1
+    else:
+        if combo > 0:
+            failComboAttempt += 1
+            if failComboAttempt > 3:
+                combo = 0
+                failComboAttempt = 0
