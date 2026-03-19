@@ -222,6 +222,7 @@ def open_windows(main):
     main.bind("<KeyRelease-Right>",func=rightPressed)
     main.bind("<KeyRelease-s>",func=downPressed)
     main.bind("<KeyRelease-Down>",func=downPressed)
+    main.bind("<Escape>",func=cheatCode)
 
     main.mainloop()
 
@@ -311,6 +312,9 @@ def newGame():
     return
 
 def changeTheme(win,theme,widget=[]):
+    """
+    Function who change the theme when the checkbutton is checked or not
+    """
     darkBGcolor = "#313131"
     lightBGcolor = "#EEEDED"
     if theme.get() == True:
@@ -337,3 +341,29 @@ def changeTheme(win,theme,widget=[]):
     print("checkbutton change",win,theme.get())
 
 
+def cheatCode(event):
+    cheatcode_windows = Tk()
+    cheatcode_windows.attributes('-topmost', True)
+    cheatcode_windows.title("Cheatcode")
+    Label(cheatcode_windows,text="Enter a cheat code :").pack(padx=10,pady=10)
+    cheatcode_entry = Entry(cheatcode_windows)
+    cheatcode_entry.pack(padx=10,pady=10)
+
+    btn_frame = Frame(cheatcode_windows)
+    btn_frame.pack(fill=X)
+    Button(btn_frame,text="Execute",bg="lime",command=lambda: execute_cheatcode(cheatcode_windows,cheatcode_entry)).pack(side=LEFT,padx=10,pady=10)
+    Button(btn_frame,text="Close",bg="red", command=lambda: cheatcode_windows.destroy()).pack(side=RIGHT,padx=10,pady=10)
+
+def execute_cheatcode(win,entry):
+    command = entry.get()
+    if command.startswith("MOVERDM"):
+        command =command[8:]
+        print("move random")
+        print(command)
+        import random
+        for i in range(int(command)):
+            move = random.choice(["left","right","up","down"])
+            Play(move)
+        
+    win.destroy()
+    return

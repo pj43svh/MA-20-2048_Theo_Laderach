@@ -116,13 +116,13 @@ def playLeft(temp_grid,NoScore =False):
             if merge !=0 :
                 merged = True
     
-    checkCombo(merged)
 
 
     if nothing_change:
         result = False
     else:                   
         result = temp_grid
+        checkCombo(merged)
 
     if not NoScore :
         result= result,score
@@ -148,13 +148,13 @@ def playRight(temp_grid,NoScore =False) :
             if merge != 0:
                 merged = True
                 score += temp_score
-    
-    checkCombo(merged)
+
 
     if nothing_change:
         result = False
     else:                   
         result = temp_grid
+        checkCombo(merged)
 
     if not NoScore :
         result= result,score
@@ -181,12 +181,12 @@ def playUp(temp_grid,NoScore =False):
             if merge != 0:
                 merged = True
 
-    checkCombo(merged)
 
     if nothing_change:
         result = False
     else:                   
         result = temp_grid
+        checkCombo(merged)
 
     if not NoScore :
         result= result,score
@@ -214,11 +214,11 @@ def playDown(temp_grid,NoScore =False):
             if merge != 0:
                 merged = True
     
-    checkCombo(merged)
 
     if nothing_change:
         result = False
-    else:                   
+    else:
+        checkCombo(merged)
         result = temp_grid
 
     if not NoScore :
