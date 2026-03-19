@@ -151,6 +151,8 @@ def open_windows(main):
     new_btn = Button(right_fr,
                      text="New Game",
                      font=(DEFAULT_FONT,12),
+                     width=15,height=1,
+                     bg="#717171",activebackground="#8B8B8B",
                      command=newGame)
     new_btn.pack()
 
@@ -196,23 +198,24 @@ def Play(direction):
     and the end of the game is checked.
     """
     global alreadyHave2048
+    # Check if the player made a 2048
     if direction == "left":
-        temp_grid = core.playLeft(core.grid)
+        temp_grid,temp_score = core.playLeft(core.grid)
     elif direction == "right" :
-        temp_grid = core.playRight(core.grid)
+        temp_grid,temp_score = core.playRight(core.grid)
     elif direction == "up" :
-        temp_grid = core.playUp(core.grid)
+        temp_grid,temp_score = core.playUp(core.grid)
     elif direction == "down" :
-        temp_grid = core.playDown(core.grid)
+        temp_grid,temp_score = core.playDown(core.grid)
     
     if not temp_grid:
         print("nothing can move")
     else:
+        core.score += temp_score
         core.grid = temp_grid
         core.spawn_rdm(core.grid,core.SIDE)
     refresh_screen()
 
-    # Check if the player made a 2048
     if not alreadyHave2048 :
         for row in core.grid:
             # 11 is 2048 in the dictionnary
@@ -227,17 +230,17 @@ def Play(direction):
     # Check if the grid has empty case
     if not core.checkEmptyCase(core.grid,core.SIDE):
         # verify if you can move
-        if not core.playUp(core.grid) and not core.playDown(core.grid) and not core.playLeft(core.grid) and not core.playRight(core.grid) :
+        if not core.playUp(core.grid,NoScore=True) and not core.playDown(core.grid,NoScore=True) and not core.playLeft(core.grid,NoScore=True) and not core.playRight(core.grid,NoScore=True) :
         # if you can't move, it's game over.
             print("Game over")
-            if messagebox.askretrycancel("Game Over", "GAME OVER !\nDo you want retry ?") :
+            if messagebox.askretrycancel("Game Over", f"GAME OVER !\nDo you want retry ?\nScore : {core.score}") :
                 newGame()
             else:
                 exit()
             return
+    
 
-    else:
-        return
+    return
 
 
 
@@ -265,6 +268,7 @@ def newGame():
     """
     global alreadyHave2048
     alreadyHave2048 = False
+    core.score = 0
     core.start_game()
     refresh_screen()
     return

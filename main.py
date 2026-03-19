@@ -2,7 +2,6 @@
 # Author : Théo Läderach
 # Date : 17.03.2026
 # Version : 1.1 Main version
-
 from tkinter import *
 
 main=Tk()
