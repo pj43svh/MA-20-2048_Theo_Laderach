@@ -74,7 +74,7 @@ def start_game():
     global grid
 
     # Turn the TEST_MODE to True to see the color of all number
-    TEST_MODE = True
+    TEST_MODE = False
 
     if TEST_MODE:
         grid = [[1, 2, 3, 4],
@@ -103,7 +103,6 @@ def playLeft(temp_grid,NoScore =False):
     nothing_change = True
     merged = False
 
-
     score=0
 
     # Use the Function pack4 for each lines to the left
@@ -114,7 +113,7 @@ def playLeft(temp_grid,NoScore =False):
                 # something change
                 nothing_change = False
                 score += temp_score
-            if merge:
+            if merge !=0 :
                 merged = True
     
     checkCombo(merged)
@@ -146,7 +145,7 @@ def playRight(temp_grid,NoScore =False) :
             if change > 0:
                 #something change
                 nothing_change = False
-            if merge:
+            if merge != 0:
                 merged = True
                 score += temp_score
     
@@ -179,7 +178,7 @@ def playUp(temp_grid,NoScore =False):
                 nothing_change = False
                 score += temp_score
 
-            if merge:
+            if merge != 0:
                 merged = True
 
     checkCombo(merged)
@@ -212,7 +211,7 @@ def playDown(temp_grid,NoScore =False):
                 nothing_change = False
                 score += temp_score
                 
-            if merge:
+            if merge != 0:
                 merged = True
     
     checkCombo(merged)
@@ -265,7 +264,6 @@ def pack4(a,b,c,d):
     # 16,8,2,2 => 16,8,4,0
     if c == d and c != 0:
         c,d = c + 1,0
-        merge = True
         change += 1
         merge += 1
         temp_score += 2**c
@@ -275,7 +273,6 @@ def pack4(a,b,c,d):
     if a == b and a != 0:
         a,b,c,d = a + 1,c,d,0
 
-        merge = True
         change += 1
         merge += 1
         temp_score += 2**a
@@ -285,10 +282,11 @@ def pack4(a,b,c,d):
     if b == c and b != 0 and merge == 0:
         b,c,d = b + 1,d,0
         change += 1
+        merge += 1
         temp_score += 2**b
     
         
-    return a,b,c,d, change,temp_score,merge
+    return a,b,c,d, change,merge,temp_score
 
 def checkCombo(merged):
     global combo, failComboAttempt

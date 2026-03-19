@@ -122,7 +122,7 @@ def open_windows(main):
     """
     Creation of the windows and the grid on the interface
     """
-    global score_num_lbl,labels,labelBackground, combo, combo_txt
+    global score_num_lbl,labels,labelBackground, combo, combo_txt,title_lbl
 
     
     # Create the Front-end grid referring to the back-end grid
@@ -135,51 +135,45 @@ def open_windows(main):
     labelBackground = core.create_grid(core.SIDE, fill=None)
 
 
-    top_fr =Frame(main)
+    top_fr =Frame(main,height=159)
     top_fr.pack(side=TOP, fill=X)
 
-    left_fr = Frame(top_fr)
-    left_fr.pack(side=LEFT,padx=30,pady=30,ipady=0,ipadx=0)
 
-    title_lbl = Label(left_fr,
+    title_lbl = Label(top_fr,
                        text=txt_dict.get("title","2048"),
                        font=(DEFAULT_FONT,52,"bold"),
                        fg=color_dict.get("title","#f90303"))
-    title_lbl.pack()
+    title_lbl.place(x=20,y=30)
 
-    theme = IntVar()
-    theme_cb = Checkbutton(left_fr,
+    theme = BooleanVar()
+    theme_cb = Checkbutton(top_fr,
                             text="Dark theme",
                             variable=theme,
-                            onvalue=1,
-                            offvalue=0,
-                            command=lambda : changeTheme(main,theme))
-    theme_cb.pack()
+                            onvalue=True,
+                            offvalue=False,
+                            command=lambda : changeTheme(main,theme,widget=[top_fr, theme_cb,score_num_lbl,score_txt_lbl,game_fr]))
+    theme_cb.place(x=60,y=100)
 
 
-    right_fr = Frame(top_fr)
-    right_fr.pack(side=RIGHT, fill=X,padx=0,pady=0,ipady=0)
+    
 
-    score_fr = Frame(right_fr)
-    score_fr.pack()
-
-    score_txt_lbl = Label(score_fr,
+    score_txt_lbl = Label(top_fr,
                           text="Score : "
-                          ,font=(DEFAULT_FONT,18))
-    score_txt_lbl.pack(side=LEFT)
+                          ,font=(DEFAULT_FONT,15))
+    score_txt_lbl.place(x=275,y=30)
 
-    score_num_lbl = Label(score_fr,
+    score_num_lbl = Label(top_fr,
                           text="0",
                           font=(DEFAULT_FONT,18,"bold"))
-    score_num_lbl.pack(side=RIGHT)
+    score_num_lbl.place(x=350,y=30)
 
-    new_btn = Button(right_fr,
+    new_btn = Button(top_fr,
                      text="New Game",
                      font=(DEFAULT_FONT,12),
                      width=15,height=1,
                      bg="#717171",activebackground="#8B8B8B",
                      command=newGame)
-    new_btn.pack()
+    new_btn.place(x=280,y=70)
 
     # search on stackoverflow : how to add an image in tkinter ?
     image_combo_path = os.path.join(current_dir, "combo", "cup-0.png")
@@ -194,7 +188,7 @@ def open_windows(main):
     combo.place(x=200,y=85)
 
     combo_txt = Label(top_fr,text="0",font=(DEFAULT_FONT,18,"bold"),bg="#BABEBE")
-    combo_txt.place(x=200,y=140)
+    combo_txt.place(x=200,y=135)
 
 
     game_fr = Frame(main, 
@@ -316,12 +310,28 @@ def newGame():
     refresh_screen()
     return
 
-def changeTheme(win,theme):
-    if theme.get() == 1:
-        win.configure(background="#313131")
-        
-    elif theme.get() == 0 :
-        win.configure(background="#D9D9D9")
+def changeTheme(win,theme,widget=[]):
+    darkBGcolor = "#313131"
+    lightBGcolor = "#EEEDED"
+    if theme.get() == True:
+        win.configure(background=darkBGcolor)
+        title_lbl.config(bg=darkBGcolor)
+        for i in widget :
+            i.config(bg=darkBGcolor)
+            try:
+                i.config(fg="white")
+            except:
+                pass
+
+    elif theme.get() == False :
+        win.configure(background=lightBGcolor)
+        title_lbl.config(bg=lightBGcolor)
+        for i in widget:
+            i.config(bg=lightBGcolor)
+            try:
+                i.config(fg="black")
+            except:
+                pass
     else :
         print("error")
     print("checkbutton change",win,theme.get())
