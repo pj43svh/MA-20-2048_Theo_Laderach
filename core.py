@@ -12,6 +12,8 @@ combo = 0
 
 failComboAttempt = 0
 
+TEST_MODE = False
+
 def create_grid(side, fill=None):
     """
     Create a square grid made of list and fill with the parameter fill
@@ -74,7 +76,7 @@ def start_game():
     global grid
 
     # Turn the TEST_MODE to True to see the color of all number
-    TEST_MODE = False
+    
 
     if TEST_MODE:
         grid = [[1, 2, 3, 4],

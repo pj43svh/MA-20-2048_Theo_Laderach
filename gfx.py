@@ -224,7 +224,6 @@ def open_windows(main):
     main.bind("<KeyRelease-Down>",func=downPressed)
     main.bind("<Escape>",func=cheatCode)
 
-    main.mainloop()
 
 
 def Play(direction):
@@ -345,25 +344,91 @@ def cheatCode(event):
     cheatcode_windows = Tk()
     cheatcode_windows.attributes('-topmost', True)
     cheatcode_windows.title("Cheatcode")
+
     Label(cheatcode_windows,text="Enter a cheat code :").pack(padx=10,pady=10)
-    cheatcode_entry = Entry(cheatcode_windows)
-    cheatcode_entry.pack(padx=10,pady=10)
+    cmd_fr = Frame(cheatcode_windows)
+    cmd_fr.pack(fill=X,pady=5)
+    Label(cmd_fr,text="Command :").pack(padx=5,side=LEFT)
+    cheatcode_entry = Entry(cmd_fr)
+    cheatcode_entry.pack(padx=10,pady=10,side=RIGHT)
+
+    arg_fr=Frame(cheatcode_windows)
+    arg_fr.pack(fill=X,pady=5)
+    Label(arg_fr,text="Argument").pack(padx=5,side=LEFT)
+    arg_entry = Entry(arg_fr)
+    arg_entry.pack(padx=10,pady=10,side=RIGHT)
 
     btn_frame = Frame(cheatcode_windows)
     btn_frame.pack(fill=X)
-    Button(btn_frame,text="Execute",bg="lime",command=lambda: execute_cheatcode(cheatcode_windows,cheatcode_entry)).pack(side=LEFT,padx=10,pady=10)
+    Button(btn_frame,text="Execute",bg="lime",command=lambda: execute_cheatcode(cheatcode_windows,cheatcode_entry,arg_entry)).pack(side=LEFT,padx=10,pady=10)
     Button(btn_frame,text="Close",bg="red", command=lambda: cheatcode_windows.destroy()).pack(side=RIGHT,padx=10,pady=10)
 
-def execute_cheatcode(win,entry):
-    command = entry.get()
-    if command.startswith("MOVERDM"):
-        command =command[8:]
-        print("move random")
-        print(command)
-        import random
-        for i in range(int(command)):
-            move = random.choice(["left","right","up","down"])
-            Play(move)
+def execute_cheatcode(win,command_entry,argument_entry):
+    command_list = {
+        "moveRDM": moveRDM,
+        "restart": newGame,
+        "spawn":spawn_number,
+        "debugMode":switch_to_test_mode,
+        "setCombo": setCombo,
+        "setScore": setScore
+    }
+    command = command_entry.get()
+    argument = argument_entry.get()
+
+    if command in command_list:
+        if argument =="":
+            command_list[command]()
+        else:
+            command_list[command](argument)
+        win.destroy()
+    else :
+        messagebox.showinfo("Command error", "invalid commande name")
+
         
-    win.destroy()
+        
     return
+
+def moveRDM(rep):
+    import random
+    for i in range(int(rep)):
+        move = random.choice(["left","right","up","down"])
+        Play(move)
+    return
+
+def spawn_number(num):
+    if num == "random":
+        core.spawn_rdm(core.grid,core.SIDE)
+    else:
+        try:
+            num = int(num)
+        except:
+            messagebox.showwarning("WARING", "The value must be random or an integer between 1 to 13")
+            
+        if not 0 < num <= 13:
+            messagebox.showwarning("WARING", "The value must be random or an integer between 1 to 13")
+            return
+        from random import randint
+
+        rdmX = randint(0,core.SIDE-1)
+        rdmY = randint(0,core.SIDE-1)
+        
+        while core.grid[rdmX][rdmY]:
+            rdmX = randint(0,core.SIDE-1)
+            rdmY = randint(0,core.SIDE-1)
+        print("empty case at",rdmX,rdmY)
+        core.grid[rdmX][rdmY]=num
+    refresh_screen()
+    return
+
+def switch_to_test_mode():
+    core.TEST_MODE = not core.TEST_MODE
+    newGame()
+
+def setCombo(num):
+    core.combo = int(num)
+    core.failComboAttempt = 0
+    refresh_screen()
+
+def setScore(num):
+    core.score = num
+    refresh_screen()
