@@ -65,7 +65,7 @@ def render_grid_color():
     for y in range(len(core.grid)):
         for x in range(len(core.grid[y])):
             # replace every item in the list using the disctionnary
-            visualGridColor[y][x] = color_dict.get(str(core.grid[y][x]), "#FF0000")
+            visualGridColor[y][x] = color_dict.get(str(core.grid[y][x]), ("#FF0000","#000000"))
 
 
 def refresh_labels_grid():
@@ -370,7 +370,8 @@ def execute_cheatcode(win,command_entry,argument_entry):
         "spawn":spawn_number,
         "debugMode":switch_to_test_mode,
         "setCombo": setCombo,
-        "setScore": setScore
+        "setScore": setScore,
+        "list": displayList
     }
     command = command_entry.get()
     argument = argument_entry.get()
@@ -432,3 +433,12 @@ def setCombo(num):
 def setScore(num):
     core.score = num
     refresh_screen()
+
+def displayList():
+    messagebox.showinfo("List of command","""moveRDM: move randomely
+restart: restart the game
+spaw:spawn the number of your choice (1-13)
+debugMode: set the grid to normal or all the number
+setCombo: set the number of Combo
+setScore: setthe score Score
+list: show all the command""")

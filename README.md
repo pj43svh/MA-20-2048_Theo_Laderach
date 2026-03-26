@@ -18,4 +18,6 @@ Voici mon projet 2028 pour le cours MA-20
 
 [sprint 3](https://github.com/pj43svh/MA-20-2048_Theo_Laderach/tree/troisi%C3%A8me-sprint)
 
+[sprint 4](https://github.com/pj43svh/MA-20-2048_Theo_Laderach/tree/main)
+
 </details>
