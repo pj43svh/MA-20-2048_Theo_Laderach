@@ -346,6 +346,9 @@ def changeTheme(win,theme,widget=[]):
 
 
 def cheatCode(event):
+    """
+    Create a new windows for the cheatcode
+    """
     cheatcode_windows = Tk()
     cheatcode_windows.attributes('-topmost', True)
     cheatcode_windows.title("Cheatcode")
@@ -365,10 +368,15 @@ def cheatCode(event):
 
     btn_frame = Frame(cheatcode_windows)
     btn_frame.pack(fill=X)
+
     Button(btn_frame,text="Execute",bg="lime",command=lambda: execute_cheatcode(cheatcode_windows,cheatcode_entry,arg_entry)).pack(side=LEFT,padx=10,pady=10)
     Button(btn_frame,text="Close",bg="red", command=lambda: cheatcode_windows.destroy()).pack(side=RIGHT,padx=10,pady=10)
 
 def execute_cheatcode(win,command_entry,argument_entry):
+    """
+    execution of the command in the command windows
+    when the button execute is pressed
+    """
     command_list = {
         "moveRDM": moveRDM,
         "restart": newGame,
@@ -376,7 +384,7 @@ def execute_cheatcode(win,command_entry,argument_entry):
         "debugMode":switch_to_test_mode,
         "setCombo": setCombo,
         "setScore": setScore,
-        "list": displayList
+        "help": displayList
     }
     command = command_entry.get()
     argument = argument_entry.get()
@@ -446,4 +454,4 @@ spaw:spawn the number of your choice (1-13)
 debugMode: set the grid to normal or all the number
 setCombo: set the number of Combo
 setScore: setthe score Score
-list: show all the command""")
+help: show all the command""")
