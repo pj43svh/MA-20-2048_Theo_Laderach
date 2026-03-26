@@ -318,7 +318,9 @@ def changeTheme(win,theme,widget=[]):
     """
     darkBGcolor = "#313131"
     lightBGcolor = "#EEEDED"
+
     if theme.get() == True:
+        # dark theme
         win.configure(background=darkBGcolor)
         title_lbl.config(bg=darkBGcolor)
         for i in widget :
@@ -329,6 +331,7 @@ def changeTheme(win,theme,widget=[]):
                 pass
 
     elif theme.get() == False :
+        # light theme
         win.configure(background=lightBGcolor)
         title_lbl.config(bg=lightBGcolor)
         for i in widget:
@@ -339,7 +342,7 @@ def changeTheme(win,theme,widget=[]):
                 pass
     else :
         print("error")
-    print("checkbutton change",win,theme.get())
+    print("checkbutton change",theme.get())
 
 
 def cheatCode(event):
