@@ -65,7 +65,7 @@ def render_grid_color():
     for y in range(len(core.grid)):
         for x in range(len(core.grid[y])):
             # replace every item in the list using the disctionnary
-            visualGridColor[y][x] = color_dict.get(str(core.grid[y][x]), ("#FF0000","#000000"))
+            visualGridColor[y][x] = color_dict.get(str(core.grid[y][x]), ["#FF0000","#000000"])
 
 
 def refresh_labels_grid():
@@ -251,7 +251,9 @@ def Play(direction):
         core.spawn_rdm(core.grid,core.SIDE)
     refresh_screen()
 
+    # Ckeck if you have already win
     if not alreadyHave2048 :
+        # if not, verify all the grid to found if it have a 2048
         for row in core.grid:
             # 11 is 2048 in the dictionnary
             if 11 in row:
