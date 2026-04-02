@@ -418,7 +418,7 @@ def spawn_number(num):
         except:
             messagebox.showwarning("WARING", "The value must be random or an integer between 1 to 13")
             
-        if not 0 < num <= 13:
+        if not 0 < num <= 15:
             messagebox.showwarning("WARING", "The value must be random or an integer between 1 to 13")
             return
         from random import randint
