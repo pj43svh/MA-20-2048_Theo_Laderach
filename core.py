@@ -291,10 +291,16 @@ def pack4(a,b,c,d):
     return a,b,c,d, change,merge,temp_score
 
 def checkCombo(merged):
+    """
+    Add 1 combo if a marged do and if you failed 3 times, the combo is reset.
+    """
     global combo, failComboAttempt
 
     if merged:
         combo += 1
+
+        # Décommenter cette ligne pour que les essais des combo se réinitialise quand un combo est fait
+        # failComboAttempt = 0
     else:
         if combo > 0:
             failComboAttempt += 1
